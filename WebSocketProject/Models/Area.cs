@@ -7,7 +7,7 @@ namespace WebSocketProject.Models
     {
         public Area()
         {
-            Switch = new HashSet<Switch>();
+            Ioswitch = new HashSet<Ioswitch>();
         }
 
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace WebSocketProject.Models
         public bool IsSelected { get; set; }
         public string SocketIp { get; set; }
 
-        public virtual ICollection<Switch> Switch { get; set; }
+        public virtual ICollection<Ioswitch> Ioswitch { get; set; }
     }
 }

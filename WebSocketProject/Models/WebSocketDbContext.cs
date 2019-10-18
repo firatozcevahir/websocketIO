@@ -9,13 +9,14 @@ namespace WebSocketProject.Models
         public WebSocketDbContext()
         {
         }
+
         public WebSocketDbContext(DbContextOptions<WebSocketDbContext> options)
             : base(options)
         {
         }
 
         public virtual DbSet<Area> Area { get; set; }
-        public virtual DbSet<Switch> Switch { get; set; }
+        public virtual DbSet<Ioswitch> Ioswitch { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +36,7 @@ namespace WebSocketProject.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Switch>(entity =>
+            modelBuilder.Entity<Ioswitch>(entity =>
             {
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -59,7 +60,7 @@ namespace WebSocketProject.Models
                     .IsFixedLength();
 
                 entity.HasOne(d => d.Area)
-                    .WithMany(p => p.Switch)
+                    .WithMany(p => p.Ioswitch)
                     .HasForeignKey(d => d.AreaId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Switch_Area");

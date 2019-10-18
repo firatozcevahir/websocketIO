@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebSocketProject.Models
 {
-    public partial class Switch
+    public partial class Ioswitch
     {
         public int Id { get; set; }
         public int AreaId { get; set; }

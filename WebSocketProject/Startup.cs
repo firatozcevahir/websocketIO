@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebSocketProject.DataAccess;
-using WebSocketProject.Models;
-using WebSocketProject.Services;
 using Microsoft.EntityFrameworkCore;
+using WebSocketProject.Models;
 
 namespace WebSocketProject
 {
@@ -27,7 +25,16 @@ namespace WebSocketProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<WebSocketDbContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("WebSocketDatabase")));
+            services.AddDbContext<WebSocketDbContext>(_ => _.UseSqlServer("Server=.;Database=WebSocketDb;Trusted_Connection=True;"));
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AutomaticAuthentication = false;
+            });
+
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

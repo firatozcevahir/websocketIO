@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace WebSocketProject.DataAccess
 
         public async Task<List<Area>> GetAreasWithSwitches()
         {
-            return await _context.Area.Include(a => a.Switch).ToListAsync();
+            return await _context.Area.Include(a => a.Ioswitch).ToListAsync();
         }
     }
 }

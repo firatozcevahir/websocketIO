@@ -5,11 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebSocketProject.DataAccess;
 using WebSocketProject.Models;
-using WebSocketProject.Services;
 
 namespace WebSocketProject.ViewComponents
 {
-    public class AreasViewComponent : ViewComponent
+    public class AreasViewComponent:ViewComponent
     {
         private readonly AreaDataAccess areaDataAccess;
 

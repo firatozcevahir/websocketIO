@@ -8,7 +8,7 @@ using WebSocketProject.Models;
 
 namespace WebSocketProject.ViewComponents
 {
-    public class SwitchesViewComponent:ViewComponent
+    public class SwitchesViewComponent : ViewComponent
     {
         private readonly AreaDataAccess areaDataAccess;
 
