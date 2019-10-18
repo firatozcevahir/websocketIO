@@ -1,0 +1,40 @@
+﻿@model List<WebSocketProject.Models.Area>
+
+
+@foreach (var area in Model)
+{
+    <div class="tab-pane fade" id="@(area.Name.Trim())" role="tabpanel" aria-labelledby="area1-tab">
+        <div class="row align-items-center text-center m-auto">
+
+            @foreach (var item in area.Switch)
+            {
+                <div class="col-md-4 col-sm-4 align-items-center text-center border-right switch-container mt-5">
+                    <div class="switch">
+                        <input class="chck-switch" name="toggle"
+                               type="checkbox" id="switch_@(item.Id)"
+                               data-module-name="@(item.ModuleName.Trim())"
+                               data-io-mode="@(item.Iomode.Trim())"
+                               data-io-number="@(item.Ionumber.Trim())" />
+                        <label for="toggle">
+                            <i class="bulb">
+                                <span class="bulb-center"></span>
+                                <span class="filament-1"></span>
+                                <span class="filament-2"></span>
+                                <span class="reflections">
+                                    <span></span>
+                                </span>
+                                <span class="sparks">
+                                    <i class="spark1"></i>
+                                    <i class="spark2"></i>
+                                    <i class="spark3"></i>
+                                    <i class="spark4"></i>
+                                </span>
+                            </i>
+                        </label>
+                    </div>
+                    <p>@(item.Description.Trim())</p>
+                </div>
+            }
+        </div>
+    </div>
+}

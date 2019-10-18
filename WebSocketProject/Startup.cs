@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebSocketProject.DataAccess;
+using WebSocketProject.Models;
+using WebSocketProject.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebSocketProject
 {
@@ -23,6 +27,7 @@ namespace WebSocketProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddDbContext<WebSocketDbContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("WebSocketDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

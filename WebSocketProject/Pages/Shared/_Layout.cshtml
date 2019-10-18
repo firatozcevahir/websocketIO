@@ -14,16 +14,7 @@
             !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
         </script>
     </header>
-    <ul class="nav nav-pills nav-justified mt-3 custom-shadow" id="rooms">
-        <li class="nav-item p-event-none">
-            <a class="nav-link active btn-area" id="area1-tab" data-toggle="tab" href="#area1" role="tab" aria-controls="area1" aria-selected="true" data-socket-ip="192.168.43.159:81" data-target-area="area1">Bölge 1</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text btn-area" id="area2-tab" data-toggle="tab" href="#area2" role="tab" aria-controls="area2" aria-selected="false" data-socket-ip="192.168.43.159:81" data-target-area="area2">Bölge 2</a>
-        </li>
-    </ul>
-
-
+    @await Component.InvokeAsync("Areas")
     <div>
         <main role="main">
             <div id="overlay">
