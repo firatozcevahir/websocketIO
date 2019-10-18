@@ -25,7 +25,7 @@ namespace WebSocketProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<WebSocketDbContext>(_ => _.UseSqlServer("Server=.;Database=WebSocketDb;Trusted_Connection=True;"));
+            services.AddDbContext<WebSocketDbContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("WebSocketDatabase")));
             services.Configure<IISServerOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
