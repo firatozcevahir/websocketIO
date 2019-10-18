@@ -20,5 +20,10 @@ namespace WebSocketProject.DataAccess
         {
             return await _context.Area.ToListAsync();
         }
+
+        public async Task<List<Area>> GetAreasWithSwitches()
+        {
+            return await _context.Area.Include(a => a.Switch).ToListAsync();
+        }
     }
 }
