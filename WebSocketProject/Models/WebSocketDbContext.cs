@@ -9,7 +9,6 @@ namespace WebSocketProject.Models
         public WebSocketDbContext()
         {
         }
-
         public WebSocketDbContext(DbContextOptions<WebSocketDbContext> options)
             : base(options)
         {
@@ -17,15 +16,6 @@ namespace WebSocketProject.Models
 
         public virtual DbSet<Area> Area { get; set; }
         public virtual DbSet<Switch> Switch { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;Database=WebSocketDb;Trusted_Connection=True;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

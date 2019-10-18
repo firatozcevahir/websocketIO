@@ -841,9 +841,10 @@ body {
     line-height: 50px;
     font-size: 18px;
     border-bottom: 1px solid #eee;
-    background: rgb(222,222,222);
     color: #777;
+    background: rgb(222,222,222);
     background: linear-gradient(0deg, rgba(222,222,222,1) 0%, rgba(255,255,255,1) 100%);
+    border: 1px solid #ccc;
 }
 
 #rooms .active {
@@ -932,7 +933,6 @@ body {
     }
 }
 
-.p-event-none{
-    pointer-events: none
+.p-event-none {
+    pointer-events: none;
 }
-
