@@ -1,0 +1,22 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="area1" role="tabpanel" aria-labelledby="area1-tab">
+        <partial name="_BasePartial" />
+    </div>
+    <div class="tab-pane fade" id="area2" role="tabpanel" aria-labelledby="area2-tab">
+        <partial name="_TestPartial" />
+    </div>
+    
+</div>
+<div class="text-center align-items-center">
+    <div class="col-md-12">
+        <div class="switch-power on-off-switch">
+            <input type="checkbox" id="chck_toggleall">
+            <label><i class="fas fa-power-off icon-off"></i></label>
+        </div>
+    </div>
+</div>

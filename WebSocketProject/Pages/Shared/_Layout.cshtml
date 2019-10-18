@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebSocketProject</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header class="custom-shadow">
+        <a class="weatherwidget-io" href="https://forecast7.com/tr/41d0329d29/sancaktepe/" data-label_1="İSTANBUL" data-label_2="SANCAKTEPE" data-font="Ubuntu" data-icons="Climacons Animated" data-mode="Current" data-theme="beige">İSTANBUL SANCAKTEPE</a>
+        <script>
+            !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+        </script>
+    </header>
+    <ul class="nav nav-pills nav-justified mt-3 custom-shadow" id="rooms">
+        <li class="nav-item">
+            <a class="nav-link active btn-area" id="area1-tab" data-toggle="tab" href="#area1" role="tab" aria-controls="area1" aria-selected="true" data-socket-ip="192.168.43.159" data-target-area="area1">Bölge 1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text btn-area" id="area2-tab" data-toggle="tab" href="#area2" role="tab" aria-controls="area2" aria-selected="false" data-socket-ip="192.168.43.159" data-target-area="area2">Bölge 2</a>
+        </li>
+    </ul>
+
+
+    <div>
+        <main role="main">
+            <div id="overlay">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+    <footer>
+        <div class="col-12 text-center">
+            <img src="~/images/Logo-Teknopalas-02.png" width="90" height="90" />
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/1d46cb9d68.js" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
