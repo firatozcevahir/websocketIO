@@ -9,6 +9,6 @@ namespace WebSocketProject.Services
     public interface IAreaService
     {
         Task<List<Area>> GetAreasAsync();
-        Task<List<Area>> GetAreasWithSwitches();
+        Task<List<Area>> GetAreasWithSwitchesAsync();
     }
 }

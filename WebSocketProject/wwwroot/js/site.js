@@ -12,7 +12,6 @@
  * 
  * 
  */
-
 var ws = null;
 var commandText = "";
 var processedCommand = {};
@@ -20,11 +19,9 @@ var processedCommand = {};
 //default websocket url from the default area on first load
 var url = "ws://" + $(".btn-area.active").data("socket-ip");
 
-
+//default switches from the default area on first load
 var targetArea = $(".btn-area.active").data("target-area");
 $("#" + targetArea).toggleClass("active show");
-
-//default switches from the default area on first load
 var switches = $("#" + targetArea).find(".chck-switch");
 
 var btnAreas = $(".btn-area");
@@ -39,13 +36,12 @@ $(document).ready(function () {
 btnAreas.click(function (e) {
     $(btnAreas).parent().removeClass("p-event-none");
     $(e.target).parent().addClass("p-event-none");
-
     //get the websocket ip from the related object
     url = "ws://" + $(e.target).data("socket-ip");
     //get the switches of selected area using the data attribute of the related object
     switches = $("#" + $(e.target).data("target-area")).find(".chck-switch");
     overlay.show();
-    ws = null;
+    ws.close();
     createWebSocket();
 });
 
@@ -57,7 +53,7 @@ function createWebSocket() {
     ws.onclose = onClose;
 }
 
-function checkAllChecked() {
+function switchesAreChecked() {
     var allChecked = false;
     switches.each(function () {
         var result = this;
@@ -81,11 +77,8 @@ var onOpen = function () {
     switches.change(function (e) {
         //get the command string of related switch object and send via websocket
         commandText = getCommandText(e.target, "cmd");
-
         ws.send(commandText);
-
     });
-
     console.log("websocket connected to: " + url);
 }
 
@@ -95,7 +88,7 @@ var onMessage = function (event) {
     console.log(processedCommand);
     if (processedCommand.cmdtype == "bro") {
         updateStateOfSwitch(processedCommand);
-        chckToggleAll.prop("checked", checkAllChecked());
+        chckToggleAll.prop("checked", switchesAreChecked());
     }
 }
 
@@ -106,8 +99,7 @@ var onError = function (event) {
 }
 
 var onClose = function (event) {
-    ws = null;
-    console.log("Bağlantı kapatıldı");
+    console.log(url + " connection closed");
 }
 
 function processCommand(cmdText) {
@@ -128,7 +120,7 @@ function getCommandText(e, type) {
 
 function updateStateOfSwitch(pcommand) {
     //change the 'checked' state of the related switch depending on the processed command
-    $('[data-module-name="' + pcommand.modulename + '"][data-io-mode="' + pcommand.iomode + '"][data-io-number="' + pcommand.ionumber + '"]').prop('checked', (pcommand.state == "01" ? true : false));
+    $('[data-module-name="' + pcommand.modulename + '"][data-io-mode="' + pcommand.iomode + '"][data-io-number="' + pcommand.ionumber + '"]').prop("checked", (pcommand.state == "01" ? true : false));
 }
 
 chckToggleAll.change(function (e) {

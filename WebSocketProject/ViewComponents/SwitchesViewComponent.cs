@@ -19,7 +19,7 @@ namespace WebSocketProject.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(await areaDataAccess.GetAreasWithSwitches());
+            return View(await areaDataAccess.GetAreasWithSwitchesAsync());
         }
     }
 }
