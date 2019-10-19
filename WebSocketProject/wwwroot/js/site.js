@@ -1,6 +1,5 @@
 ﻿/* 
- * Websocket project
- * 
+ * Websocket project 
  * 
  * required data attributes of checkboxes for the switches  : data-module-name, data-io-mode, data-io-number
  * each checkbox must have 'chck-switch' class
@@ -66,6 +65,7 @@ function switchesAreChecked() {
     });
     return allChecked;
 }
+
 var onOpen = function () {
     //first state of each switch in the related area will be send from here on connection open
     switches.each(function () {
