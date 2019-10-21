@@ -7,8 +7,7 @@
  * 
  * to get the switches in current area, each tab navigation button must have 'btn-area' class
  * required data attributes for navigation buttons: data-socket-ip, data-target-area
- * each button must target a div that switches are in * 
- * 
+ * each button must target a div that switches are in * * 
  * 
  */
 var ws = null;
@@ -18,26 +17,34 @@ var processedCommand = {};
 //default websocket url from the default area on first load
 var url = "ws://" + $(".btn-area.active").data("socket-ip");
 
-//default switches from the default area on first load
+//get the default switches from the active area on first load
 var targetArea = $(".btn-area.active").data("target-area");
 $("#" + targetArea).toggleClass("active show");
 var switches = $("#" + targetArea).find(".chck-switch");
+var switchSound = new Audio("sounds/switch-on-off.mp3");
 
+//get buttons to navigate between the areas
 var btnAreas = $(".btn-area");
+
+//checkbox to toggle each switch in the active area
 var chckToggleAll = $("#chck_toggleall");
+
+//loading overlay screen
 var overlay = $("#overlay");
 
 $(document).ready(function () {
     //create the first websocket with default configuration
+    switchToggler();
     createWebSocket();
 });
 
+//navigating between the areas and create the new websocket for selected area
 btnAreas.click(function (e) {
     $(btnAreas).parent().removeClass("p-event-none");
     $(e.target).parent().addClass("p-event-none");
-    //get the websocket ip from the related object
+    //get the websocket ip from the related navigation button
     url = "ws://" + $(e.target).data("socket-ip");
-    //get the switches of selected area using the data attribute of the related object
+    //get the switches of the selected area by using data attribute of the related navigation button
     switches = $("#" + $(e.target).data("target-area")).find(".chck-switch");
     overlay.show();
     ws.close();
@@ -55,8 +62,7 @@ function createWebSocket() {
 function switchesAreChecked() {
     var allChecked = false;
     switches.each(function () {
-        var result = this;
-        if (result.checked) {
+        if (this.checked) {
             allChecked = true;
         } else {
             allChecked = false;
@@ -73,12 +79,8 @@ var onOpen = function () {
         ws.send(commandText);
     });
 
+    switchToggler();
     overlay.fadeOut(1000);
-    switches.change(function (e) {
-        //get the command string of related switch object and send via websocket
-        commandText = getCommandText(e.target, "cmd");
-        ws.send(commandText);
-    });
     console.log("websocket connected to: " + url);
 }
 
@@ -94,11 +96,11 @@ var onMessage = function (event) {
 
 var onError = function (event) {
     //websocket connection fail
-    console.log("websocket failed to connect: " + url);
-    setTimeout("location.reload(true);", 500);
+    console.log("websocket failed to connect to: " + url);
+    setTimeout("location.reload(true);", 2000);
 }
 
-var onClose = function (event) {
+var onClose = function () {
     console.log(url + " connection closed");
 }
 
@@ -123,11 +125,34 @@ function updateStateOfSwitch(pcommand) {
     $('[data-module-name="' + pcommand.modulename + '"][data-io-mode="' + pcommand.iomode + '"][data-io-number="' + pcommand.ionumber + '"]').prop("checked", (pcommand.state == "01" ? true : false));
 }
 
+function switchToggler() {
+    switches.change(function (e) {
+        //get the command string of related switch object and send via websocket
+        var senderObj = e.target;
+        toggleWorker(senderObj, 500, switchSound);
+        if (ws.readyState === 1) {
+            commandText = getCommandText(senderObj, "cmd");
+            ws.send(commandText);
+        } else {
+            overlay.show();
+        }
+    });
+}
+
 chckToggleAll.change(function (e) {
     //change the 'checked' state of each switch in the current area depending on the related object's 'checked' state
+    var senderObj = e.target;
+    toggleWorker(senderObj, 500, switchSound);
     switches.each(function () {
-        this.checked = e.target.checked;
+        this.checked = senderObj.checked;
         commandText = getCommandText(this, "cmd");
         ws.send(commandText);
     });
 });
+
+function toggleWorker(item, millisecond, audio_item) {
+    //play sound on event and disable the related object for provided millisecond long
+    item.disabled = true;
+    setTimeout(function () { item.disabled = false; }, millisecond);
+    audio_item.play();
+}
