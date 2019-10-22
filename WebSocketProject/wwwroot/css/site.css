@@ -1,6 +1,7 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -71,7 +72,32 @@ body {
     margin-bottom: 60px;
     background-image: url("/images/dot-grid.png");
     background-repeat: repeat;
+    scrollbar-track-color: #AAA;
+    scrollbar-3dlight-color: #AAA;
+    scrollbar-darkshadow-color: #AAA;
+    scrollbar-arrow-color: #AAA;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+        background: #333;
+    }
 
 .footer {
     position: absolute;
@@ -840,16 +866,17 @@ body {
 #rooms .nav-item {
     line-height: 50px;
     font-size: 18px;
-    border-bottom: 1px solid #eee;
     color: #777;
-    background: rgb(222,222,222);
-    background: linear-gradient(0deg, rgba(222,222,222,1) 0%, rgba(255,255,255,1) 100%);
-    border: 1px solid #ccc;
+    background: #fff;
+    border-right: 1px solid #bbb;
 }
 
+    #rooms .nav-item:last-child {
+        border-right: none;
+    }
+
 #rooms .active {
-    background: rgb(0,0,0);
-    background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(57,49,90,1) 100%);
+    background: #4e437a;
     color: #fff;
 }
 
