@@ -21,6 +21,9 @@ var overlay = $("#overlay");
 //buttons to navigate between the areas
 var btnAreas = $(".btn-area");
 
+//base container for switches
+var switchArea = $("#switch_area");
+
 //default websocket url from the active area on first load
 var url = "ws://" + $(".btn-area.active").data("socket-ip");
 
@@ -58,13 +61,15 @@ function createWebSocket(wsUrl) {
 
 //get the switches in the area with ajax call and create new websocket on done function
 function executeWebSocket(wsUrl, area_id) {
+    switchArea.hide();
     $.ajax({
         type: "GET",
         url: "/Index?handler=SwitchList&id=" + area_id,
         dataType: "HTML"
     }).done(function (data) {
-        $("#switch_area").html(data);
-        switches = $("#switch_area").find(".chck-switch");
+        switchArea.fadeIn(500);
+        switchArea.html(data);
+        switches = switchArea.find(".chck-switch");
         switchToggler();
         createWebSocket(wsUrl);
     });
@@ -86,13 +91,13 @@ function switchesAreChecked() {
 
 var onOpen = function () {
     //first state of each switch in the related area will be send from here on connection open
-    requestStates();
+    requestSwitchStates();
     switchToggler();
     overlay.fadeOut(1000);
     console.log("websocket connected to: " + url);
 }
 
-function requestStates() {
+function requestSwitchStates() {
     switches.each(function () {
         commandText = getCommandText(this, "req");
         ws.send(commandText);
