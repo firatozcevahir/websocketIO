@@ -17,9 +17,9 @@ namespace WebSocketProject.ViewComponents
             areaDataAccess = new AreaDataAccess(db);
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(int area_id)
         {
-            return View(await areaDataAccess.GetAreasWithSwitchesAsync());
+            return View(await areaDataAccess.GetAreaWithSwitchesAsync(area_id));
         }
     }
 }

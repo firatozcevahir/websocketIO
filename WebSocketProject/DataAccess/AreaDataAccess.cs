@@ -22,9 +22,11 @@ namespace WebSocketProject.DataAccess
             return await _context.Area.ToListAsync();
         }
 
-        public async Task<List<Area>> GetAreasWithSwitchesAsync()
+        public async Task<Area> GetAreaWithSwitchesAsync(int area_id)
         {
-            return await _context.Area.Include(a => a.Ioswitch).ToListAsync();
+            return await _context.Area.Where(a => a.Id == area_id)
+                                      .Include(a => a.Ioswitch)                                      
+                                      .FirstOrDefaultAsync();
         }
     }
 }

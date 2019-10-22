@@ -3,8 +3,8 @@
 <ul class="nav nav-pills nav-justified mt-3 custom-shadow" id="rooms">
     @foreach (var area in Model)
     {
-        <li class="nav-item">
-            <a class="nav-link @(area.IsSelected ? "active " : "")btn-area rounded-0"
+        <li class="nav-item@(area.IsSelected ? " p-event-none" : "")">
+            <a class="nav-link btn-area @(area.IsSelected ? "active " : "")rounded-0"
                id="@(area.Name.Trim())-tab"
                data-toggle="tab"
                href="#@area.Name.Trim()"
@@ -12,7 +12,9 @@
                aria-controls="@area.Name.Trim()"
                aria-selected="@area.IsSelected.ToString().ToLower()"
                data-socket-ip="@area.SocketIp.Trim()"
-               data-target-area="@area.Name.Trim()">@area.Description.Trim()</a>
-        </li>
-    }
+               data-area-id="@area.Id.ToString().Trim()">
+                @area.Description.Trim()
+        </a>
+    </li>
+}
 </ul>

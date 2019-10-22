@@ -2,63 +2,75 @@
  * Websocket project 
  * 
  * required data attributes of checkboxes for the switches  : data-module-name, data-io-mode, data-io-number
- * each checkbox must have 'chck-switch' class
- * each checkbox must be within a div with id targeted by related tab navigation button
+ * each switch must have 'chck-switch' class
+ * each switch must be within a div with id 'switch_area'
  * 
- * to get the switches in current area, each tab navigation button must have 'btn-area' class
- * required data attributes for navigation buttons: data-socket-ip, data-target-area
- * each button must target a div that switches are in * * 
+ * to get the switches in current area, each navigation button must have 'btn-area' class
+ * required data attributes for navigation buttons: data-socket-ip, data-area-id
  * 
  */
 var ws = null;
 var commandText = "";
 var processedCommand = {};
-
-//default websocket url from the default area on first load
-var url = "ws://" + $(".btn-area.active").data("socket-ip");
-
-//get the default switches from the active area on first load
-var targetArea = $(".btn-area.active").data("target-area");
-$("#" + targetArea).toggleClass("active show");
-var switches = $("#" + targetArea).find(".chck-switch");
+var switches;
 var switchSound = new Audio("sounds/switch-on-off.mp3");
-
-//get buttons to navigate between the areas
-var btnAreas = $(".btn-area");
-
-//checkbox to toggle each switch in the active area
-var chckToggleAll = $("#chck_toggleall");
 
 //loading overlay screen
 var overlay = $("#overlay");
 
+//buttons to navigate between the areas
+var btnAreas = $(".btn-area");
+
+//default websocket url from the active area on first load
+var url = "ws://" + $(".btn-area.active").data("socket-ip");
+
+//get the switches from the active area on first load
+var area_id = $(".btn-area.active").data("area-id");
+
+//checkbox to toggle each switch in the active area
+var chckToggleAll = $("#chck_toggleall");
+
 $(document).ready(function () {
     //create the first websocket with default configuration
-    switchToggler();
-    createWebSocket();
+    executeWebSocket(url, area_id);
 });
 
-//navigating between the areas and create the new websocket for selected area
+//navigate between the areas and create the new websocket for selected area
 btnAreas.click(function (e) {
+    var senderObj = e.target;
     $(btnAreas).parent().removeClass("p-event-none");
-    $(e.target).parent().addClass("p-event-none");
-    //get the websocket ip from the related navigation button
-    url = "ws://" + $(e.target).data("socket-ip");
-    //get the switches of the selected area by using data attribute of the related navigation button
-    switches = $("#" + $(e.target).data("target-area")).find(".chck-switch");
+    $(senderObj).parent().addClass("p-event-none");
     overlay.show();
+    //get the websocket ip from the related navigation button
+    url = "ws://" + $(senderObj).data("socket-ip");
+    area_id = $(senderObj).data("area-id");
     ws.close();
-    createWebSocket();
+    executeWebSocket(url, area_id);
 });
 
-function createWebSocket() {
-    ws = new WebSocket(url);
+function createWebSocket(wsUrl) {
+    ws = new WebSocket(wsUrl);
     ws.onopen = onOpen;
     ws.onmessage = onMessage;
     ws.onerror = onError;
     ws.onclose = onClose;
 }
 
+//get the switches in the area with ajax call and create new websocket on done function
+function executeWebSocket(wsUrl, area_id) {
+    $.ajax({
+        type: "GET",
+        url: "/Index?handler=SwitchList&id=" + area_id,
+        dataType: "HTML"
+    }).done(function (data) {
+        $("#switch_area").html(data);
+        switches = $("#switch_area").find(".chck-switch");
+        switchToggler();
+        createWebSocket(wsUrl);
+    });
+}
+
+//check whether each switch is checked/unchecked in an area
 function switchesAreChecked() {
     var allChecked = false;
     switches.each(function () {
@@ -74,14 +86,17 @@ function switchesAreChecked() {
 
 var onOpen = function () {
     //first state of each switch in the related area will be send from here on connection open
+    requestStates();
+    switchToggler();
+    overlay.fadeOut(1000);
+    console.log("websocket connected to: " + url);
+}
+
+function requestStates() {
     switches.each(function () {
         commandText = getCommandText(this, "req");
         ws.send(commandText);
     });
-
-    switchToggler();
-    overlay.fadeOut(1000);
-    console.log("websocket connected to: " + url);
 }
 
 var onMessage = function (event) {

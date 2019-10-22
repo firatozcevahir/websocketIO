@@ -19,7 +19,10 @@ namespace WebSocketProject.Pages
 
         public void OnGet()
         {
-
+        }
+        public ViewComponentResult OnGetSwitchList(int id)
+        {
+            return ViewComponent("Switches", new { area_id = id });
         }
     }
 }
